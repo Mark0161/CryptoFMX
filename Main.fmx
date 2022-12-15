@@ -347,7 +347,7 @@ object MainForm: TMainForm
           StyleLookup = 'listboxitemlabel'
           TextSettings.Font.Size = 18.000000000000000000
         end
-        object lblTitle: TLabel
+        object lblLastUpdated: TLabel
           Align = Client
           StyledSettings = [Family, Style, FontColor]
           Size.Width = 896.000000000000000000
@@ -617,6 +617,25 @@ object MainForm: TMainForm
       Text = 'StatusLabel'
       TabOrder = 0
     end
+    object ActiveTaskLabel: TLabel
+      Align = Right
+      Position.X = 676.000000000000000000
+      Size.Width = 120.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'ActiveTaskLabel'
+      TabOrder = 2
+    end
+    object ElapsedTimeLabel: TLabel
+      Align = MostRight
+      Margins.Right = 20.000000000000000000
+      Position.X = 796.000000000000000000
+      Size.Width = 161.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      TextSettings.HorzAlign = Trailing
+      TabOrder = 1
+    end
   end
   object ScrollBar1: TScrollBar
     Align = MostTop
@@ -744,6 +763,7 @@ object MainForm: TMainForm
           AppearanceClassName = 'TTextObjectAppearance'
         end>
       CanSwipeDelete = False
+      OnItemClick = ListView1ItemClick
       SearchVisible = True
     end
   end

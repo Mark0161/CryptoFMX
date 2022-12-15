@@ -8,8 +8,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
   FMX.StdCtrls, FMX.ListView, FMX.MultiView, FMX.Edit, FMX.Objects, FMX.Layouts,
-  FMX.Controls.Presentation, EventBus,
-  FMX.Ani;
+  FMX.Controls.Presentation, EventBus, FMX.Ani, uModel;
 
 type
   TMainForm = class(TForm)
@@ -37,7 +36,7 @@ type
     imgContact: TImage;
     Layout3: TLayout;
     lblName: TLabel;
-    lblTitle: TLabel;
+    lblLastUpdated: TLabel;
     ToolBar1: TToolBar;
     Text1: TText;
     MasterButton: TSpeedButton;
@@ -62,13 +61,23 @@ type
     StatusLabel: TLabel;
     ScrollBar1: TScrollBar;
     FloatAnimation1: TFloatAnimation;
+    ActiveTaskLabel: TLabel;
+    ElapsedTimeLabel: TLabel;
     procedure FormShow(Sender: TObject);
     procedure AniIndicator1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
+    procedure ListView1ItemClick(const Sender: TObject;
+      const AItem: TListViewItem);
   private
     { Private declarations }
+    procedure updateListview(CryptoList: ICryptoListUpdated;
+      var firstShow: Boolean);
+    procedure AsyncActive(const Active: Boolean = true);
   public
     { Public declarations }
+    [Subscribe(TThreadMode.Main)]
+    procedure onAsyncCompleteEvent(ACryptoListUpdated
+      : ICryptoListUpdated); overload;
   end;
 
 var
@@ -76,18 +85,48 @@ var
 
 implementation
 
-uses System.Threading,System.SyncObjs,System.Diagnostics;
+uses System.Threading, System.SyncObjs, System.Diagnostics, uDataStruct;
 
 {$R *.fmx}
 { TMainForm }
 
 var
-  FirstShow: Boolean = True;
+  firstShow: Boolean = true;
+  CryptoImages: TRCryptoImages;
+  localCryptoList: TRCryptoList;
+  SelectedCrypto: TCryptoStruct;
+  SelectedListViewItem: integer = 0;
+  Stopwatch: TStopwatch;
   fTaskActive: integer = 0;
 
 procedure TMainForm.AniIndicator1Click(Sender: TObject);
 begin
   ShowMessage('Hello');
+end;
+
+procedure TMainForm.AsyncActive(const Active: Boolean);
+begin
+  Layout1.Enabled := Active;
+  AniIndicator1.Enabled := Active;
+  PleaseWaitRectangle.Enabled := Active;
+  Layout1.Enabled := Active;
+  AniIndicator1.Enabled := Active;
+  Layout1.Visible := Active;
+  AniIndicator1.Visible := Active;
+  if Active = true then
+  begin
+    Stopwatch := TStopwatch.StartNew;
+    StatusLabel.text := 'Please Wait...  ';
+    AtomicIncrement(fTaskActive);
+  end
+  else
+  begin
+    Stopwatch.Stop;
+    StatusLabel.text := 'Ready';
+    ElapsedTimeLabel.text := Stopwatch.ElapsedMilliseconds.ToString() + ' ms';
+    AtomicDecrement(fTaskActive);
+  end;
+  ActiveTaskLabel.text := 'Async count: ' + fTaskActive.ToString();
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
@@ -102,47 +141,114 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
-  if FirstShow then
   begin
-    StatusLabel.Text := 'Please Wait';
-    Layout1.Enabled := True;
-    AniIndicator1.Enabled := True;
-    PleaseWaitRectangle.Enabled := True;
-    Layout1.Visible := True;
-    AniIndicator1.Visible := True;
-    PleaseWaitRectangle.Visible := True;
-    TTask.Run(
-      procedure
-      var // aTask:ITask;
-        tasks: array of ITask;
-        Stopwatch: TStopwatch;
+    if firstShow then
+    begin
+      GlobalEventBus.RegisterSubscriberForEvents(Self);
+      AsyncActive(true);
+      TUIRequestClass.Async_GetCryptoListFields(@localCryptoList, true);
+    end;
+  end;
+end;
+
+procedure TMainForm.ListView1ItemClick(const Sender: TObject;
+  const AItem: TListViewItem);
+var
+  bmp: TBitmap;
+begin
+  // MultiView1.HideMaster;
+  SelectedListViewItem := AItem.Tag; // Index;
+  SelectedCrypto := localCryptoList.fCryptoList[SelectedListViewItem];
+  lblName.text := SelectedCrypto.Name;
+
+  var
+    ts: TFormatSettings;
+  ts := TFormatSettings.Create;
+  ts.ShortDateFormat := 'yyyy-MM-dd';
+  ts.DateSeparator := '-';
+  ts.TimeSeparator := ':';
+  var
+  dt := StrToDateTime(SelectedCrypto.Last_updated, ts);
+
+  lblLastUpdated.text := Format('Last updated: %s %s',
+    [FormatDateTime('dd-mmm-yyyy', dt), FormatDateTime('hh:nn:ss', dt)]);
+  CryptoImages.fCryptoImages.TryGetValue(SelectedCrypto.ID, bmp);
+  imgContact.bitmap := bmp;
+  PriceLbl.text := Format('%m', [SelectedCrypto.current_price]);
+  MarketCapLbl.text := Format('%m', [SelectedCrypto.market_cap]);
+  SupplyLbl.text := Format('%m', [SelectedCrypto.total_supply]);
+  // FloatToStrF(CryptoObj.total_supply, ffCurrency,10,0);
+  MaxSupplyLbl.text := Format('%.0n', [SelectedCrypto.max_supply + 0.0]);
+  dayChangeLbl.text := Format('%.2f %%',
+    [SelectedCrypto.price_change_percentage_24h]);
+  dayVolumeLbl.text := Format('%.0n', [SelectedCrypto.total_volume + 0.0]);
+  MultiView1.HideMaster;
+end;
+
+procedure TMainForm.onAsyncCompleteEvent(ACryptoListUpdated
+  : ICryptoListUpdated);
+begin
+  if ACryptoListUpdated.hasImages then
+  begin
+    CryptoImages := ACryptoListUpdated.GetImages;
+  end;
+  AsyncActive(False);
+  updateListview(ACryptoListUpdated, firstShow);
+end;
+
+procedure TMainForm.updateListview(CryptoList: ICryptoListUpdated;
+  var firstShow: Boolean);
+var
+  bmp: TBitmap;
+  CryptoObj: TCryptoStruct;
+begin
+  ListView1.BeginUpdate;
+  ListView1.Items.Clear;
+  try
+    var
+      Index: integer := 0;
+    ListView1.Items.Clear;
+    for CryptoObj in CryptoList.Getdata().fCryptoList do
+    begin
+      var
+        LItem: TListViewItem := ListView1.Items.Add;
+      LItem.Tag := Index;
+      inc(Index);
+      LItem.data['Text1'] := CryptoObj.Name;
+      LItem.data['Text3'] := UpperCase(CryptoObj.symbol);
+      if CryptoObj.current_price < CryptoObj.prev_price then
       begin
-        AtomicIncrement(fTaskActive);
-        Stopwatch := TStopwatch.StartNew;
-        Setlength(tasks, 1);
-        tasks[0] := TTask.Run(
-          procedure
-          begin
-            Sleep(10000);
-          end);
-        tasks[0].Start;
-        TTask.WaitforAll(tasks);
-        TThread.Synchronize(TThread.Current,
-          procedure
-          begin
-            Layout1.Enabled := False;
-            AniIndicator1.Enabled := False;
-            PleaseWaitRectangle.Enabled := False;
-            Layout1.Enabled := False;
-            AniIndicator1.Enabled := False;
-            PleaseWaitRectangle.Enabled := False;
-            Layout1.Visible := False;
-            AniIndicator1.Visible := False;
-            Stopwatch.Stop;
-            StatusLabel.Text := 'Time elapsed: ' + Stopwatch.ElapsedMilliseconds.ToString()+ 'ms';
-            AtomicDecrement(fTaskActive);
-          end);
-      end);
+        TListItemText(LItem.Objects.FindDrawable('Text4')).TextColor :=
+          TAlphaColorRec.Red;
+      end
+      else if CryptoObj.current_price > CryptoObj.prev_price then
+      begin
+        TListItemText(LItem.Objects.FindDrawable('Text4')).TextColor :=
+          TAlphaColorRec.Lightgreen;
+      end;
+      LItem.data['Text4'] := CurrToStrF(CryptoObj.current_price, ffCurrency, 2);
+      LItem.data['Text5'] :=
+        UpperCase(Format('%f', [CryptoObj.price_change_percentage_24h]));
+      if CryptoObj.price_change_percentage_24h < 0 then
+        TListItemText(LItem.Objects.FindDrawable('Text5')).TextColor :=
+          TAlphaColorRec.Red
+      else
+        TListItemText(LItem.Objects.FindDrawable('Text5')).TextColor :=
+          TAlphaColorRec.Lightblue;
+      if CryptoImages.fCryptoImages.TryGetValue(CryptoObj.ID, bmp) then
+      begin
+        LItem.data['Image2'] := bmp;
+        log.d(Format('bmp %s', [CryptoObj.ID]));
+      end; //
+    end;
+  finally
+    ListView1.EndUpdate;
+    if firstShow then
+    begin
+      SelectedListViewItem := 0;
+      firstShow := False;
+    end;
+    ListView1ItemClick(nil, ListView1.Items[SelectedListViewItem]);
   end;
 end;
 

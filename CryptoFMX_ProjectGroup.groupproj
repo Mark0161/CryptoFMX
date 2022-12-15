@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{3B695084-2E74-44D6-9502-0EE1E8798F3A}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="CryptoFMX.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Tests\CryptoFMXUnitXTests.dproj">
+            <Dependencies>CryptoFMX.dproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="CryptoFMX">
+        <MSBuild Projects="CryptoFMX.dproj"/>
+    </Target>
+    <Target Name="CryptoFMX:Clean">
+        <MSBuild Projects="CryptoFMX.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CryptoFMX:Make">
+        <MSBuild Projects="CryptoFMX.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="CryptoFMXUnitXTests" DependsOnTargets="CryptoFMX">
+        <MSBuild Projects="Tests\CryptoFMXUnitXTests.dproj"/>
+    </Target>
+    <Target Name="CryptoFMXUnitXTests:Clean" DependsOnTargets="CryptoFMX:Clean">
+        <MSBuild Projects="Tests\CryptoFMXUnitXTests.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CryptoFMXUnitXTests:Make" DependsOnTargets="CryptoFMX:Make">
+        <MSBuild Projects="Tests\CryptoFMXUnitXTests.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="CryptoFMX;CryptoFMXUnitXTests"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="CryptoFMX:Clean;CryptoFMXUnitXTests:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="CryptoFMX:Make;CryptoFMXUnitXTests:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
