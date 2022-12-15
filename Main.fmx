@@ -1,0 +1,750 @@
+object MainForm: TMainForm
+  Left = 0
+  Top = 0
+  Caption = 'MainForm'
+  ClientHeight = 623
+  ClientWidth = 977
+  FormFactor.Width = 320
+  FormFactor.Height = 480
+  FormFactor.Devices = [Desktop]
+  OnCloseQuery = FormCloseQuery
+  OnShow = FormShow
+  DesignerMasterStyle = 0
+  object Panel1: TPanel
+    Align = Client
+    Size.Width = 977.000000000000000000
+    Size.Height = 583.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    object GridPanelLayout2: TGridPanelLayout
+      Align = Bottom
+      Position.Y = 456.000000000000000000
+      Size.Width = 977.000000000000000000
+      Size.Height = 127.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      ColumnCollection = <
+        item
+          Value = 50.000000000000000000
+        end
+        item
+          Value = 50.000000000000000000
+        end>
+      ControlCollection = <
+        item
+          Column = 0
+          Control = Rectangle1
+          Row = 0
+        end
+        item
+          Column = 1
+          Control = Rectangle2
+          Row = 0
+        end
+        item
+          Column = 0
+          Control = Rectangle3
+          Row = 1
+        end
+        item
+          Column = 1
+          Control = Rectangle4
+          Row = 1
+        end
+        item
+          Column = 0
+          Control = Rectangle6
+          Row = 2
+        end
+        item
+          Column = 1
+          Control = Rectangle5
+          Row = 2
+        end>
+      RowCollection = <
+        item
+          Value = 33.501516046889130000
+        end
+        item
+          Value = 33.332367431332320000
+        end
+        item
+          Value = 33.166116521778550000
+        end
+        item
+          SizeStyle = Auto
+        end>
+      object Rectangle1: TRectangle
+        Align = Client
+        Fill.Color = claDarkslategray
+        Margins.Left = 1.000000000000000000
+        Margins.Top = 1.000000000000000000
+        Margins.Right = 1.000000000000000000
+        Margins.Bottom = 1.000000000000000000
+        Size.Width = 486.500000000000000000
+        Size.Height = 40.546924591064450000
+        Size.PlatformDefault = False
+        object Label2: TLabel
+          Align = Left
+          StyledSettings = [FontColor]
+          Margins.Left = 12.000000000000000000
+          Position.X = 12.000000000000000000
+          Size.Width = 150.000000000000000000
+          Size.Height = 40.546924591064450000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = 'Price'
+          TabOrder = 1
+        end
+        object PriceLbl: TLabel
+          Align = Client
+          StyledSettings = [FontColor]
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Size.Width = 314.500000000000000000
+          Size.Height = 35.546924591064450000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          Text = '---'
+          TabOrder = 0
+        end
+      end
+      object Rectangle2: TRectangle
+        Align = Client
+        Fill.Color = claDarkslategray
+        Margins.Left = 1.000000000000000000
+        Margins.Top = 1.000000000000000000
+        Margins.Right = 1.000000000000000000
+        Margins.Bottom = 1.000000000000000000
+        Size.Width = 486.500000000000000000
+        Size.Height = 40.546924591064450000
+        Size.PlatformDefault = False
+        object Label3: TLabel
+          Align = Left
+          StyledSettings = [FontColor]
+          Margins.Left = 20.000000000000000000
+          Position.X = 20.000000000000000000
+          Size.Width = 150.000000000000000000
+          Size.Height = 40.546924591064450000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = 'Market Cap'
+          TabOrder = 1
+        end
+        object MarketCapLbl: TLabel
+          Align = Client
+          StyledSettings = [FontColor]
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Size.Width = 306.500000000000000000
+          Size.Height = 35.546924591064450000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          Text = '---'
+          TabOrder = 0
+        end
+      end
+      object Rectangle3: TRectangle
+        Align = Client
+        Fill.Color = claDarkslategray
+        Margins.Left = 1.000000000000000000
+        Margins.Top = 1.000000000000000000
+        Margins.Right = 1.000000000000000000
+        Margins.Bottom = 1.000000000000000000
+        Size.Width = 486.500000000000000000
+        Size.Height = 40.332103729248050000
+        Size.PlatformDefault = False
+        object Supply: TLabel
+          Align = FitLeft
+          StyledSettings = [FontColor]
+          Margins.Left = 12.000000000000000000
+          Position.X = 12.000000000000000000
+          Size.Width = 150.000000000000000000
+          Size.Height = 40.332103729248050000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = 'Supply'
+          TabOrder = 1
+        end
+        object SupplyLbl: TLabel
+          Align = Client
+          StyledSettings = [FontColor]
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Size.Width = 314.500000000000000000
+          Size.Height = 35.332103729248050000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          Text = '---'
+          TabOrder = 0
+        end
+      end
+      object Rectangle4: TRectangle
+        Align = Client
+        Fill.Color = claDarkslategray
+        Margins.Left = 1.000000000000000000
+        Margins.Top = 1.000000000000000000
+        Margins.Right = 1.000000000000000000
+        Margins.Bottom = 1.000000000000000000
+        Size.Width = 486.500000000000000000
+        Size.Height = 40.332103729248050000
+        Size.PlatformDefault = False
+        object Label7: TLabel
+          Align = Left
+          StyledSettings = [FontColor]
+          Margins.Left = 20.000000000000000000
+          Position.X = 20.000000000000000000
+          Size.Width = 150.000000000000000000
+          Size.Height = 40.332103729248050000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = 'Max Supply'
+          TabOrder = 1
+        end
+        object MaxSupplyLbl: TLabel
+          Align = Client
+          StyledSettings = [FontColor]
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Size.Width = 306.500000000000000000
+          Size.Height = 35.332103729248050000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          Text = '---'
+          TabOrder = 0
+        end
+      end
+      object Rectangle6: TRectangle
+        Align = Client
+        Fill.Color = claDarkslategray
+        Margins.Left = 1.000000000000000000
+        Margins.Top = 1.000000000000000000
+        Margins.Right = 1.000000000000000000
+        Margins.Bottom = 1.000000000000000000
+        Size.Width = 486.500000000000000000
+        Size.Height = 40.120971679687500000
+        Size.PlatformDefault = False
+        object Label11: TLabel
+          Align = Left
+          StyledSettings = [FontColor]
+          Margins.Left = 12.000000000000000000
+          Position.X = 12.000000000000000000
+          Size.Width = 150.000000000000000000
+          Size.Height = 40.120971679687500000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = '24hr Change'
+          TabOrder = 1
+        end
+        object dayChangeLbl: TLabel
+          Align = Client
+          StyledSettings = [FontColor]
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Size.Width = 314.500000000000000000
+          Size.Height = 35.120971679687500000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          Text = '---'
+          TabOrder = 0
+        end
+      end
+      object Rectangle5: TRectangle
+        Align = Client
+        Fill.Color = claDarkslategray
+        Margins.Left = 1.000000000000000000
+        Margins.Top = 1.000000000000000000
+        Margins.Right = 1.000000000000000000
+        Margins.Bottom = 1.000000000000000000
+        Size.Width = 486.500000000000000000
+        Size.Height = 40.120971679687500000
+        Size.PlatformDefault = False
+        object Label9: TLabel
+          Align = Left
+          StyledSettings = [FontColor]
+          Margins.Left = 20.000000000000000000
+          Position.X = 20.000000000000000000
+          Size.Width = 150.000000000000000000
+          Size.Height = 40.120971679687500000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          TextSettings.Font.StyleExt = {00070000000000000004000000}
+          Text = '24hr Volume'
+          TabOrder = 1
+        end
+        object dayVolumeLbl: TLabel
+          Align = Client
+          StyledSettings = [FontColor]
+          Margins.Left = 10.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Size.Width = 306.500000000000000000
+          Size.Height = 35.120971679687500000
+          Size.PlatformDefault = False
+          TextSettings.Font.Family = 'Roboto'
+          TextSettings.Font.Size = 18.000000000000000000
+          Text = '---'
+          TabOrder = 0
+        end
+      end
+    end
+    object Panel2: TPanel
+      Align = Top
+      Position.Y = 40.000000000000000000
+      Size.Width = 977.000000000000000000
+      Size.Height = 48.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object imgContact: TImage
+        MultiResBitmap = <
+          item
+            Width = 150
+            Height = 150
+            PNG = {
+              89504E470D0A1A0A0000000D49484452000000960000009608060000003C0171
+              E2000000017352474200AECE1CE90000000467414D410000B18F0BFC61050000
+              006E49444154785EEDC13101000000C2A0F54F6D0B2F20000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              0000000000000000000000000000000000000000000000000000000000000000
+              00000000000000000000000000006E6A60350001102810B60000000049454E44
+              AE426082}
+          end
+          item
+            Scale = 2.000000000000000000
+          end>
+        Align = Left
+        Size.Width = 81.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+      end
+      object Layout3: TLayout
+        Align = Client
+        Size.Width = 896.000000000000000000
+        Size.Height = 48.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 1
+        object lblName: TLabel
+          Align = Top
+          StyledSettings = [Family, Style, FontColor]
+          Size.Width = 896.000000000000000000
+          Size.Height = 28.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'listboxitemlabel'
+          TextSettings.Font.Size = 18.000000000000000000
+        end
+        object lblTitle: TLabel
+          Align = Client
+          StyledSettings = [Family, Style, FontColor]
+          Size.Width = 896.000000000000000000
+          Size.Height = 20.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'embossedlabel'
+          TextSettings.Font.Size = 15.000000000000000000
+        end
+      end
+    end
+    object ToolBar1: TToolBar
+      Align = MostTop
+      Size.Width = 977.000000000000000000
+      Size.Height = 40.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 2
+      object Text1: TText
+        Align = Contents
+        Size.Width = 977.000000000000000000
+        Size.Height = 40.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'DETAILS'
+        object MasterButton: TSpeedButton
+          Align = Left
+          ModalResult = 5
+          Margins.Left = 5.000000000000000000
+          Margins.Top = 5.000000000000000000
+          Margins.Right = 5.000000000000000000
+          Margins.Bottom = 5.000000000000000000
+          Position.X = 5.000000000000000000
+          Position.Y = 5.000000000000000000
+          Size.Width = 44.000000000000000000
+          Size.Height = 30.000000000000000000
+          Size.PlatformDefault = False
+          StyleLookup = 'detailstoolbutton'
+        end
+      end
+    end
+    object GridPanelLayout3: TGridPanelLayout
+      Align = Top
+      Padding.Left = 5.000000000000000000
+      Position.Y = 88.000000000000000000
+      Size.Width = 977.000000000000000000
+      Size.Height = 50.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 3
+      ColumnCollection = <
+        item
+          Value = 12.496326908997000000
+        end
+        item
+          Value = 12.496285076903370000
+        end
+        item
+          Value = 12.499684830233570000
+        end
+        item
+          Value = 12.502449891733470000
+        end
+        item
+          Value = 12.502721866397340000
+        end
+        item
+          Value = 12.501805991880010000
+        end
+        item
+          Value = 12.500699707163770000
+        end
+        item
+          Value = 12.500025726691470000
+        end>
+      ControlCollection = <
+        item
+          Column = 0
+          Control = SpeedButton24h
+          Row = 0
+        end
+        item
+          Column = 1
+          Control = SpeedButton7d
+          Row = 0
+        end
+        item
+          Column = 2
+          Control = SpeedButton14d
+          Row = 0
+        end
+        item
+          Column = 3
+          Control = SpeedButton30d
+          Row = 0
+        end
+        item
+          Column = 4
+          Control = SpeedButton90d
+          Row = 0
+        end
+        item
+          Column = 5
+          Control = SpeedButton180d
+          Row = 0
+        end
+        item
+          Column = 6
+          Control = SpeedButton365d
+          Row = 0
+        end
+        item
+          Column = 7
+          Control = SpeedButton1Y
+          Row = 0
+        end>
+      RowCollection = <
+        item
+          Value = 100.000000000000000000
+        end>
+      object SpeedButton24h: TSpeedButton
+        StaysPressed = True
+        Align = Client
+        GroupName = 'GraphBtns'
+        StyledSettings = [FontColor]
+        Size.Width = 117.089111328125000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Text = '24h'
+        TextSettings.Font.Family = 'Roboto'
+        TextSettings.Font.Size = 25.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      object SpeedButton7d: TSpeedButton
+        StaysPressed = True
+        Align = Client
+        GroupName = 'GraphBtns'
+        StyledSettings = [Family, FontColor]
+        Size.Width = 117.088714599609400000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Text = '7d'
+        TextSettings.Font.Family = 'Roboto'
+        TextSettings.Font.Size = 25.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      object SpeedButton14d: TSpeedButton
+        StaysPressed = True
+        Align = Client
+        GroupName = 'GraphBtns'
+        StyledSettings = [Family, FontColor]
+        Size.Width = 117.121917724609400000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Text = '14d'
+        TextSettings.Font.Family = 'Roboto'
+        TextSettings.Font.Size = 25.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      object SpeedButton30d: TSpeedButton
+        StaysPressed = True
+        Align = Client
+        GroupName = 'GraphBtns'
+        StyledSettings = [Family, FontColor]
+        Size.Width = 117.148925781250000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Text = '30d'
+        TextSettings.Font.Family = 'Roboto'
+        TextSettings.Font.Size = 25.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      object SpeedButton90d: TSpeedButton
+        StaysPressed = True
+        Align = Client
+        GroupName = 'GraphBtns'
+        StyledSettings = [Family, FontColor]
+        Size.Width = 117.151611328125000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Text = '90d'
+        TextSettings.Font.Family = 'Roboto'
+        TextSettings.Font.Size = 25.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      object SpeedButton180d: TSpeedButton
+        StaysPressed = True
+        Align = Client
+        GroupName = 'GraphBtns'
+        StyledSettings = [Family, FontColor]
+        Size.Width = 117.142639160156300000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Text = '180d'
+        TextSettings.Font.Family = 'Roboto'
+        TextSettings.Font.Size = 25.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      object SpeedButton365d: TSpeedButton
+        StaysPressed = True
+        Align = Client
+        GroupName = 'GraphBtns'
+        StyledSettings = [Family, FontColor]
+        Size.Width = 117.131835937500000000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Text = '1Y'
+        TextSettings.Font.Family = 'Roboto'
+        TextSettings.Font.Size = 25.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+      object SpeedButton1Y: TSpeedButton
+        StaysPressed = True
+        Align = Client
+        GroupName = 'GraphBtns'
+        StyledSettings = [Family, FontColor]
+        Size.Width = 117.125305175781300000
+        Size.Height = 50.000000000000000000
+        Size.PlatformDefault = False
+        Text = 'MAX'
+        TextSettings.Font.Family = 'Roboto'
+        TextSettings.Font.Size = 25.000000000000000000
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+      end
+    end
+    object PlotPanel: TPanel
+      Align = Client
+      Size.Width = 977.000000000000000000
+      Size.Height = 318.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 4
+    end
+  end
+  object Layout1: TLayout
+    Align = Contents
+    Enabled = False
+    Size.Width = 977.000000000000000000
+    Size.Height = 623.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    TabOrder = 2
+    object PleaseWaitRectangle: TRectangle
+      Align = Contents
+      Fill.Color = claBlack
+      Opacity = 0.500000000000000000
+      Size.Width = 977.000000000000000000
+      Size.Height = 623.000000000000000000
+      Size.PlatformDefault = False
+    end
+    object AniIndicator1: TAniIndicator
+      Align = Contents
+      Size.Width = 977.000000000000000000
+      Size.Height = 623.000000000000000000
+      Size.PlatformDefault = False
+    end
+  end
+  object StatusBar1: TStatusBar
+    Position.Y = 601.000000000000000000
+    ShowSizeGrip = True
+    Size.Width = 977.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 3
+    object StatusLabel: TLabel
+      Align = FitLeft
+      Margins.Left = 10.000000000000000000
+      Position.X = 10.000000000000000000
+      Size.Width = 200.000000000000000000
+      Size.Height = 22.000000000000000000
+      Size.PlatformDefault = False
+      Text = 'StatusLabel'
+      TabOrder = 0
+    end
+  end
+  object ScrollBar1: TScrollBar
+    Align = MostTop
+    SmallChange = 0.000000000000000000
+    Orientation = Horizontal
+    Size.Width = 977.000000000000000000
+    Size.Height = 18.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 4
+    object FloatAnimation1: TFloatAnimation
+      AutoReverse = True
+      Enabled = True
+      Duration = 1.000000000000000000
+      Loop = True
+      PropertyName = 'Value'
+      StartValue = 0.000000000000000000
+      StopValue = 100.000000000000000000
+    end
+  end
+  object MultiView1: TMultiView
+    TargetControl = Panel1
+    DrawerOptions.TouchAreaSize = 15.000000000000000000
+    PopoverOptions.StyleLookup = '#FFf9f9f9'
+    PopoverOptions.PopupHeight = 220.000000000000000000
+    MasterButton = MasterButton
+    Mode = Drawer
+    NavigationPaneOptions.CollapsedWidth = 57.000000000000000000
+    Size.Width = 265.000000000000000000
+    Size.Height = 583.000000000000000000
+    Size.PlatformDefault = False
+    Visible = False
+    TabOrder = 0
+    object ToolBar2: TToolBar
+      ClipChildren = True
+      Size.Width = 265.000000000000000000
+      Size.Height = 44.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object Label1: TLabel
+        Align = Client
+        Margins.Left = 10.000000000000000000
+        Size.Width = 255.000000000000000000
+        Size.Height = 44.000000000000000000
+        Size.PlatformDefault = False
+        StyleLookup = 'toollabel'
+        Text = 'Master'
+      end
+    end
+    object ListView1: TListView
+      ItemAppearanceClassName = 'TDynamicAppearance'
+      ItemEditAppearanceClassName = 'TDynamicAppearance'
+      HeaderAppearanceClassName = 'TListHeaderObjects'
+      FooterAppearanceClassName = 'TListHeaderObjects'
+      AlternatingColors = True
+      Align = Client
+      Size.Width = 265.000000000000000000
+      Size.Height = 539.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      ItemAppearance.ItemHeight = 100
+      ItemAppearanceObjects.ItemObjects.ObjectsCollection = <
+        item
+          AppearanceObjectName = 'Text1'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Family = 'Roboto'
+          Appearance.Font.StyleExt = {04040000000000000004000000}
+          Appearance.TextAlign = Leading
+          Appearance.Width = 119.000000000000000000
+          Appearance.Height = 17.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'Image2'
+          AppearanceClassName = 'TImageObjectAppearance'
+          Appearance.Width = 25.000000000000000000
+          Appearance.Height = 20.000000000000000000
+          Appearance.PlaceOffset.X = 1.000000000000000000
+          Appearance.PlaceOffset.Y = 32.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'Text3'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Family = 'Roboto'
+          Appearance.Font.StyleExt = {00070000000000000004000000}
+          Appearance.TextAlign = Leading
+          Appearance.Width = 79.000000000000000000
+          Appearance.Height = 25.000000000000000000
+          Appearance.PlaceOffset.Y = 72.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'Text4'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Family = 'Roboto'
+          Appearance.TextAlign = Trailing
+          Appearance.Width = 95.000000000000000000
+          Appearance.Height = 24.000000000000000000
+          Appearance.PlaceOffset.X = 133.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'Text5'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Family = 'Roboto'
+          Appearance.TextAlign = Trailing
+          Appearance.Width = 89.000000000000000000
+          Appearance.Height = 25.000000000000000000
+          Appearance.PlaceOffset.X = 140.000000000000000000
+          Appearance.PlaceOffset.Y = 40.000000000000000000
+        end
+        item
+          AppearanceObjectName = 'Text6'
+          AppearanceClassName = 'TTextObjectAppearance'
+          Appearance.Font.Family = 'Roboto'
+          Appearance.TextAlign = Trailing
+          Appearance.Width = 143.000000000000000000
+          Appearance.Height = 25.000000000000000000
+          Appearance.PlaceOffset.X = 86.000000000000000000
+          Appearance.PlaceOffset.Y = 72.000000000000000000
+        end>
+      ItemAppearanceObjects.ItemEditObjects.ObjectsCollection = <
+        item
+          AppearanceObjectName = 'Text1'
+          AppearanceClassName = 'TTextObjectAppearance'
+        end
+        item
+          AppearanceObjectName = 'Text2'
+          AppearanceClassName = 'TTextObjectAppearance'
+        end>
+      CanSwipeDelete = False
+      SearchVisible = True
+    end
+  end
+end

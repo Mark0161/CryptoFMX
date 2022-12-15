@@ -67,3 +67,12 @@ __recovery/
 
 # Boss dependency manager vendor folder https://github.com/HashLoad/boss
 modules/
+
+# myStuff 
+Win64/
+Win32/
+Android/
+Android64/
+temp/
+Main.*.fmx
+*.bak
