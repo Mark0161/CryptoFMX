@@ -655,6 +655,13 @@ object MainForm: TMainForm
       StopValue = 100.000000000000000000
     end
   end
+  object PollForData_Timer: TTimer
+    Enabled = False
+    Interval = 10000
+    OnTimer = PollForData_TimerTimer
+    Left = 712
+    Top = 16
+  end
   object MultiView1: TMultiView
     TargetControl = Panel1
     DrawerOptions.TouchAreaSize = 15.000000000000000000

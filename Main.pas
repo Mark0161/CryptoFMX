@@ -63,11 +63,13 @@ type
     FloatAnimation1: TFloatAnimation;
     ActiveTaskLabel: TLabel;
     ElapsedTimeLabel: TLabel;
+    PollForData_Timer: TTimer;
     procedure FormShow(Sender: TObject);
     procedure AniIndicator1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ListView1ItemClick(const Sender: TObject;
       const AItem: TListViewItem);
+    procedure PollForData_TimerTimer(Sender: TObject);
   private
     { Private declarations }
     procedure updateListview(CryptoList: ICryptoListUpdated;
@@ -146,6 +148,8 @@ begin
     begin
       GlobalEventBus.RegisterSubscriberForEvents(Self);
       AsyncActive(true);
+      PollForData_Timer.Enabled := True;
+      //PollTask only runs if fTaskActive = 0;
       TUIRequestClass.Async_GetCryptoListFields(@localCryptoList, true);
     end;
   end;
@@ -194,6 +198,21 @@ begin
   end;
   AsyncActive(False);
   updateListview(ACryptoListUpdated, firstShow);
+end;
+
+procedure TMainForm.PollForData_TimerTimer(Sender: TObject);
+begin
+  if (fTaskActive) <> 0 then
+    // if async operation active then back off
+    exit;
+  try
+    AtomicIncrement(fTaskActive);
+    ActiveTaskLabel.text := 'Async count: ' + fTaskActive.ToString();
+    StatusLabel.text := 'Updating details.. ';
+    TUIRequestClass.Async_GetCryptoListFields(@localCryptoList, False);
+  except
+    AtomicDecrement(fTaskActive);
+  end;
 end;
 
 procedure TMainForm.updateListview(CryptoList: ICryptoListUpdated;
