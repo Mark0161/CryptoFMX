@@ -38,6 +38,10 @@ type
     // equivalent Async Futures functions
     function CreateAsyncFn_GetfulllistofCryptoCurrencies
       (const Dest: PCryptoList; const GetImages: Boolean): iFuture<String>;
+    function GetPlotDatafromURL(const widgetid: integer;
+      const datetimeurl: String): String;
+    function CreateAsyncFn_GetPlotDatafromURL(const widgetid: integer;
+      const datetimeurl: String): iFuture<String>;
   end;
 
 var
@@ -59,6 +63,16 @@ const
     'coins/%s/market_chart/range?vs_currency=%s&from=%d&to=%d';
 
   { TDM }
+function TDM.CreateAsyncFn_GetPlotDatafromURL(const widgetid: integer;
+  const datetimeurl: String): iFuture<String>;
+begin
+  result := TTask.Future<String>(
+    function: String
+    begin
+      result := GetPlotDatafromURL(widgetid, datetimeurl);
+    end);
+end;
+
 procedure TDM.DataModuleCreate(Sender: TObject);
 begin
   fCurrency := 'gbp'; // set default curency
@@ -93,7 +107,7 @@ begin
       var
         thumburl: string := url.Replace('large', 'thumb');
 {$IFDEF DEBUG}
-      log.d(thumburl);
+    //  log.d(thumburl);
 {$ENDIF}
       try
         MS := TMemoryStream.Create();
@@ -130,7 +144,7 @@ begin
         var
           thumburl: string := url.Replace('large', 'thumb');
 {$IFDEF DEBUG}
-        log.d(thumburl);
+       // log.d(thumburl);
 {$ENDIF}
         var
           MS: TMemoryStream := TMemoryStream.Create();
@@ -176,9 +190,26 @@ begin
       Dest^ := CryptoList; // Record Assign kicks in
     if GetImages then
       GetCryptoImagesPPL(CryptoList);
-    //  GetCryptoImages(CryptoList);
+    // GetCryptoImages(CryptoList);
 
     result := 'OK';
+  end;
+end;
+
+function TDM.GetPlotDatafromURL(const widgetid: integer;
+const datetimeurl: String): String;
+var
+  urlstr: String;
+begin
+  result := '';
+  RESTRequest1.Params.Clear;
+  urlstr := format(price_charts, [widgetid, fCurrency]) + datetimeurl;
+  RESTClient1.baseurl := urlstr;
+  RESTRequest1.Method := rmGET;
+  RESTRequest1.Execute;
+  if RESTResponse1.StatusCode = 200 then
+  begin
+    result := RESTResponse1.JSONText;
   end;
 end;
 

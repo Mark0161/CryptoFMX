@@ -465,6 +465,7 @@ object MainForm: TMainForm
           Value = 100.000000000000000000
         end>
       object SpeedButton24h: TSpeedButton
+        Tag = 1
         StaysPressed = True
         Align = Client
         GroupName = 'GraphBtns'
@@ -476,8 +477,10 @@ object MainForm: TMainForm
         TextSettings.Font.Family = 'Roboto'
         TextSettings.Font.Size = 25.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = GetPlotDataClick
       end
       object SpeedButton7d: TSpeedButton
+        Tag = 7
         StaysPressed = True
         Align = Client
         GroupName = 'GraphBtns'
@@ -489,8 +492,10 @@ object MainForm: TMainForm
         TextSettings.Font.Family = 'Roboto'
         TextSettings.Font.Size = 25.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = GetPlotDataClick
       end
       object SpeedButton14d: TSpeedButton
+        Tag = 14
         StaysPressed = True
         Align = Client
         GroupName = 'GraphBtns'
@@ -502,8 +507,10 @@ object MainForm: TMainForm
         TextSettings.Font.Family = 'Roboto'
         TextSettings.Font.Size = 25.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = GetPlotDataClick
       end
       object SpeedButton30d: TSpeedButton
+        Tag = 30
         StaysPressed = True
         Align = Client
         GroupName = 'GraphBtns'
@@ -515,8 +522,10 @@ object MainForm: TMainForm
         TextSettings.Font.Family = 'Roboto'
         TextSettings.Font.Size = 25.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = GetPlotDataClick
       end
       object SpeedButton90d: TSpeedButton
+        Tag = 90
         StaysPressed = True
         Align = Client
         GroupName = 'GraphBtns'
@@ -528,8 +537,10 @@ object MainForm: TMainForm
         TextSettings.Font.Family = 'Roboto'
         TextSettings.Font.Size = 25.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = GetPlotDataClick
       end
       object SpeedButton180d: TSpeedButton
+        Tag = 180
         StaysPressed = True
         Align = Client
         GroupName = 'GraphBtns'
@@ -541,8 +552,10 @@ object MainForm: TMainForm
         TextSettings.Font.Family = 'Roboto'
         TextSettings.Font.Size = 25.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = GetPlotDataClick
       end
       object SpeedButton365d: TSpeedButton
+        Tag = 365
         StaysPressed = True
         Align = Client
         GroupName = 'GraphBtns'
@@ -554,8 +567,10 @@ object MainForm: TMainForm
         TextSettings.Font.Family = 'Roboto'
         TextSettings.Font.Size = 25.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = GetPlotDataClick
       end
       object SpeedButton1Y: TSpeedButton
+        Tag = 9999
         StaysPressed = True
         Align = Client
         GroupName = 'GraphBtns'
@@ -567,6 +582,7 @@ object MainForm: TMainForm
         TextSettings.Font.Family = 'Roboto'
         TextSettings.Font.Size = 25.000000000000000000
         TextSettings.Font.StyleExt = {00070000000000000004000000}
+        OnClick = GetPlotDataClick
       end
     end
     object PlotPanel: TPanel
@@ -575,6 +591,18 @@ object MainForm: TMainForm
       Size.Height = 318.000000000000000000
       Size.PlatformDefault = False
       TabOrder = 4
+      inline PlotFrame1: TPlotFrame
+        Align = Client
+        Size.Width = 977.000000000000000000
+        Size.Height = 318.000000000000000000
+        Size.PlatformDefault = False
+        inherited Memo1: TMemo
+          Size.Width = 957.000000000000000000
+          Size.Height = 298.000000000000000000
+          Viewport.Width = 953.000000000000000000
+          Viewport.Height = 294.000000000000000000
+        end
+      end
     end
   end
   object Layout1: TLayout
@@ -655,10 +683,10 @@ object MainForm: TMainForm
       StopValue = 100.000000000000000000
     end
   end
-  object PollForData_Timer: TTimer
+  object PollForCryptoData: TTimer
     Enabled = False
     Interval = 10000
-    OnTimer = PollForData_TimerTimer
+    OnTimer = PollForCryptoDataTimer
     Left = 712
     Top = 16
   end

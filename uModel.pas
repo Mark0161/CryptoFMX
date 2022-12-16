@@ -18,14 +18,44 @@ type
     function GetRefCount(): integer;
   end;
 
+  ICryptoPlotData = interface
+    ['{DFF722D0-6637-43A2-BA74-84A99415EED8}']
+    function GetId(): String;
+    function Getdata(): String;
+    function GetdateRange(): String;
+    function GetRefCount(): integer;
+  end;
+
+  ICryptoPlotData2 = interface
+    ['{B59DC663-A6F6-40DD-9D1D-4CE9368C89D0}']
+    function GetId(): String;
+    function Getdata(): String;
+    function GetdateRange(): String;
+  end;
+
   // EventBus Dataload Interfaces BEGIN
 
-  // On Async operation completion, signals calling thread with EventBus Event/Dataload
+  // On Async operation completion, signals the calling thread with EventBus Event/Dataload
   TUIRequestClass = class
   public
     class procedure Async_GetCryptoListFields(localCryptoList: pCryptoList;
       const GetImages: Boolean = false); static;
-
+    class function GetPlotData24h_Async(const widgetid: integer)
+      : Boolean; static;
+    class function GetPlotData7d_Async(const widgetid: integer)
+      : Boolean; static;
+    class function GetPlotData14d_Async(const widgetid: integer)
+      : Boolean; static;
+    class function GetPlotData30d_Async(const widgetid: integer)
+      : Boolean; static;
+    class function GetPlotData90d_Async(const widgetid: integer)
+      : Boolean; static;
+    class function GetPlotData180d_Async(const widgetid: integer)
+      : Boolean; static;
+    class function GetPlotData365d_Async(const widgetid: integer)
+      : Boolean; static;
+    class function GetPlotDataMax_Async(const widgetid: integer)
+      : Boolean; static;
   end;
 
   // An Event/Action is a command that can be dispatched (with an optional data payload) and listened to.
@@ -55,6 +85,19 @@ type
     Destructor Destroy; override;
   end;
 
+  TCryptoPlotData2 = class(TInterfacedObject, ICryptoPlotData2)
+  private
+    fJSONStr: String;
+    fid: string;
+    fRange: String;
+  public
+    function GetId(): String;
+    function Getdata(): String;
+    function GetdateRange(): String;
+    constructor Create(const JSONStr: String; id, dateRange: String);
+    Destructor Destroy; override;
+  end;
+
 function GetUIEvent(): IUIUpdate;
 begin
   result := TUIUpdate.Create;
@@ -63,6 +106,12 @@ end;
 function GetICryptoListUpdatedEvent(data: TRCryptoList): ICryptoListUpdated;
 begin
   result := TICryptoListUpdated.Create(data);
+end;
+
+function GetICryptoPlotData2(data: String; const id, dateRange: String)
+  : ICryptoPlotData2;
+begin
+  result := TCryptoPlotData2.Create(data, id, dateRange);
 end;
 
 { TUIRequestClass }
@@ -81,6 +130,150 @@ begin
           GetICryptoListUpdatedEvent(localCryptoList^);
       GlobalEventBus.post(CryptoListUpdated);
     end);
+end;
+
+class function TUIRequestClass.GetPlotData24h_Async(const widgetid
+  : integer): Boolean;
+var
+  PlotData: String;
+begin;
+  TTask.Run(
+    procedure
+    begin
+      PlotData := Dm.CreateAsyncFn_GetPlotDatafromURL(widgetid,
+        '24_hours.json').Value;
+      var
+        uCryptoPlotData: ICryptoPlotData2 := GetICryptoPlotData2(PlotData, '',
+          '24_hours');
+      GlobalEventBus.post(uCryptoPlotData);
+    end);
+  result := true;
+end;
+
+class function TUIRequestClass.GetPlotData30d_Async(const widgetid
+  : integer): Boolean;
+var
+  PlotData: String;
+begin;
+  TTask.Run(
+    procedure
+    begin
+      PlotData := Dm.CreateAsyncFn_GetPlotDatafromURL(widgetid,
+        '30_days.json').Value;
+      var
+        uCryptoPlotData: ICryptoPlotData2 := GetICryptoPlotData2(PlotData, '',
+          '30_day');
+      GlobalEventBus.post(uCryptoPlotData);
+    end);
+  result := true;
+end;
+
+class function TUIRequestClass.GetPlotData7d_Async(const widgetid
+  : integer): Boolean;
+var
+  PlotData: String;
+begin
+  TTask.Run(
+    procedure
+    begin
+      PlotData := Dm.CreateAsyncFn_GetPlotDatafromURL(widgetid,
+        '7_days.json').Value;
+      var
+        uCryptoPlotData: ICryptoPlotData2 := GetICryptoPlotData2(PlotData,
+          '', '7_day');
+      GlobalEventBus.post(uCryptoPlotData);
+    end);
+  result := true;
+end;
+
+class function TUIRequestClass.GetPlotData14d_Async(const widgetid
+  : integer): Boolean;
+var
+  PlotData: String;
+begin
+  TTask.Run(
+    procedure
+    begin
+      PlotData := Dm.CreateAsyncFn_GetPlotDatafromURL(widgetid,
+        '14_days.json').Value;
+      var
+        uCryptoPlotData: ICryptoPlotData2 := GetICryptoPlotData2(PlotData, '',
+          '14_day');
+      GlobalEventBus.post(uCryptoPlotData);
+    end);
+  result := true;
+end;
+
+class function TUIRequestClass.GetPlotData90d_Async(const widgetid
+  : integer): Boolean;
+var
+  PlotData: String;
+begin
+  TTask.Run(
+    procedure
+    begin
+      PlotData := Dm.CreateAsyncFn_GetPlotDatafromURL(widgetid,
+        '90_days.json').Value;
+      var
+        uCryptoPlotData: ICryptoPlotData2 := GetICryptoPlotData2(PlotData, '',
+          '90_day');
+      GlobalEventBus.post(uCryptoPlotData);
+    end);
+  result := true;
+end;
+
+class function TUIRequestClass.GetPlotData180d_Async(const widgetid
+  : integer): Boolean;
+var
+  PlotData: String;
+begin
+  TTask.Run(
+    procedure
+    begin
+      PlotData := Dm.CreateAsyncFn_GetPlotDatafromURL(widgetid,
+        '180_days.json').Value;
+      var
+        uCryptoPlotData: ICryptoPlotData2 := GetICryptoPlotData2(PlotData, '',
+          '180_day');
+      GlobalEventBus.post(uCryptoPlotData);
+    end);
+  result := true;
+end;
+
+class function TUIRequestClass.GetPlotData365d_Async(const widgetid
+  : integer): Boolean;
+var
+  PlotData: String;
+begin
+  TTask.Run(
+    procedure
+    begin
+      PlotData := Dm.CreateAsyncFn_GetPlotDatafromURL(widgetid,
+        '365_days.json').Value;
+      var
+        uCryptoPlotData: ICryptoPlotData2 := GetICryptoPlotData2(PlotData, '',
+          '365_day');
+      GlobalEventBus.post(uCryptoPlotData);
+    end);
+  result := true;
+end;
+
+class function TUIRequestClass.GetPlotDataMax_Async(const widgetid
+  : integer): Boolean;
+var
+  PlotData: String;
+begin
+  TTask.Run(
+    procedure
+    begin
+      PlotData := Dm.CreateAsyncFn_GetPlotDatafromURL(widgetid,
+        'max.json').Value;
+      var
+        uCryptoPlotData: ICryptoPlotData2 := GetICryptoPlotData2(PlotData,
+          '', 'Max');
+      GlobalEventBus.post(uCryptoPlotData);
+    end);
+  result := true;
 end;
 
 constructor TICryptoListUpdated.Create(data: TRCryptoList);
@@ -112,6 +305,37 @@ end;
 function TICryptoListUpdated.hasImages: Boolean;
 begin
   result := Dm.CryptoImages.fCryptoImages.Count <> 0;
+end;
+
+{ TCryptoPlotData2 }
+
+constructor TCryptoPlotData2.Create(const JSONStr: String;
+id, dateRange: String);
+begin
+  inherited Create;
+  fJSONStr := JSONStr;
+  fid := id;
+  fRange := dateRange;
+end;
+
+destructor TCryptoPlotData2.Destroy;
+begin
+  inherited;
+end;
+
+function TCryptoPlotData2.Getdata: String;
+begin
+  result := fJSONStr;
+end;
+
+function TCryptoPlotData2.GetdateRange: String;
+begin
+  result := fRange;
+end;
+
+function TCryptoPlotData2.GetId: String;
+begin
+  result := fid;
 end;
 
 end.

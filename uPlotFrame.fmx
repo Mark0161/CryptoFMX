@@ -1,0 +1,21 @@
+object PlotFrame: TPlotFrame
+  Size.Width = 839.000000000000000000
+  Size.Height = 388.000000000000000000
+  Size.PlatformDefault = False
+  object Memo1: TMemo
+    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+    DataDetectorTypes = []
+    ReadOnly = True
+    Align = Client
+    Margins.Left = 10.000000000000000000
+    Margins.Top = 10.000000000000000000
+    Margins.Right = 10.000000000000000000
+    Margins.Bottom = 10.000000000000000000
+    Size.Width = 819.000000000000000000
+    Size.Height = 368.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Viewport.Width = 819.000000000000000000
+    Viewport.Height = 368.000000000000000000
+  end
+end

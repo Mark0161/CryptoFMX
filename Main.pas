@@ -8,7 +8,7 @@ uses
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
   FMX.ListView.Types, FMX.ListView.Appearances, FMX.ListView.Adapters.Base,
   FMX.StdCtrls, FMX.ListView, FMX.MultiView, FMX.Edit, FMX.Objects, FMX.Layouts,
-  FMX.Controls.Presentation, EventBus, FMX.Ani, uModel;
+  FMX.Controls.Presentation, EventBus, FMX.Ani, uModel, uPlotFrame;
 
 type
   TMainForm = class(TForm)
@@ -63,23 +63,27 @@ type
     FloatAnimation1: TFloatAnimation;
     ActiveTaskLabel: TLabel;
     ElapsedTimeLabel: TLabel;
-    PollForData_Timer: TTimer;
+    PollForCryptoData: TTimer;
+    PlotFrame1: TPlotFrame;
     procedure FormShow(Sender: TObject);
-    procedure AniIndicator1Click(Sender: TObject);
     procedure FormCloseQuery(Sender: TObject; var CanClose: Boolean);
     procedure ListView1ItemClick(const Sender: TObject;
       const AItem: TListViewItem);
-    procedure PollForData_TimerTimer(Sender: TObject);
+    procedure PollForCryptoDataTimer(Sender: TObject);
+    procedure GetPlotDataClick(Sender: TObject);
   private
     { Private declarations }
     procedure updateListview(CryptoList: ICryptoListUpdated;
       var firstShow: Boolean);
+    procedure LockScreen(const Active: Boolean = true);
     procedure AsyncActive(const Active: Boolean = true);
   public
     { Public declarations }
     [Subscribe(TThreadMode.Main)]
     procedure onAsyncCompleteEvent(ACryptoListUpdated
       : ICryptoListUpdated); overload;
+    [Subscribe(TThreadMode.Main)]
+    procedure onAsyncCompleteEvent(ACryptoPlotData: ICryptoPlotData2); overload;
   end;
 
 var
@@ -99,14 +103,9 @@ var
   SelectedCrypto: TCryptoStruct;
   SelectedListViewItem: integer = 0;
   Stopwatch: TStopwatch;
-  fTaskActive: integer = 0;
+  nActiveTasks: integer = 0;
 
-procedure TMainForm.AniIndicator1Click(Sender: TObject);
-begin
-  ShowMessage('Hello');
-end;
-
-procedure TMainForm.AsyncActive(const Active: Boolean);
+procedure TMainForm.LockScreen(const Active: Boolean);
 begin
   Layout1.Enabled := Active;
   AniIndicator1.Enabled := Active;
@@ -115,25 +114,31 @@ begin
   AniIndicator1.Enabled := Active;
   Layout1.Visible := Active;
   AniIndicator1.Visible := Active;
+  AsyncActive(Active);
+end;
+
+procedure TMainForm.AsyncActive(const Active: Boolean);
+begin
   if Active = true then
   begin
     Stopwatch := TStopwatch.StartNew;
     StatusLabel.text := 'Please Wait...  ';
-    AtomicIncrement(fTaskActive);
+    AtomicIncrement(nActiveTasks);
   end
   else
   begin
     Stopwatch.Stop;
     StatusLabel.text := 'Ready';
-    ElapsedTimeLabel.text := Stopwatch.ElapsedMilliseconds.ToString() + ' ms';
-    AtomicDecrement(fTaskActive);
+    ElapsedTimeLabel.text := Format('Async time %d ms',
+      [Stopwatch.ElapsedMilliseconds]);
+    AtomicDecrement(nActiveTasks);
   end;
-  ActiveTaskLabel.text := 'Async count: ' + fTaskActive.ToString();
+  ActiveTaskLabel.text := 'Async count: ' + nActiveTasks.ToString();
 end;
 
 procedure TMainForm.FormCloseQuery(Sender: TObject; var CanClose: Boolean);
 begin
-  if fTaskActive <> 0 then
+  if nActiveTasks <> 0 then
   begin
     StatusLabel.text := 'Please wait for Task to complete';
     CanClose := False;
@@ -143,15 +148,12 @@ end;
 
 procedure TMainForm.FormShow(Sender: TObject);
 begin
+  if firstShow then
   begin
-    if firstShow then
-    begin
-      GlobalEventBus.RegisterSubscriberForEvents(Self);
-      AsyncActive(true);
-      PollForData_Timer.Enabled := True;
-      //PollTask only runs if fTaskActive = 0;
-      TUIRequestClass.Async_GetCryptoListFields(@localCryptoList, true);
-    end;
+    GlobalEventBus.RegisterSubscriberForEvents(Self);
+    LockScreen(true);
+    PollForCryptoData.Enabled := true;
+    TUIRequestClass.Async_GetCryptoListFields(@localCryptoList, true);
   end;
 end;
 
@@ -186,32 +188,92 @@ begin
   dayChangeLbl.text := Format('%.2f %%',
     [SelectedCrypto.price_change_percentage_24h]);
   dayVolumeLbl.text := Format('%.0n', [SelectedCrypto.total_volume + 0.0]);
+  // Set initial plotdata
+
+  // called by PollForCryptoData as well as SpeedButtonS
+  if (Sender is TSpeedButton) then
+  begin
+    SpeedButton24h.SetFocus;
+    SpeedButton24h.IsPressed := true;
+    SpeedButton24h.Onclick(nil);
+  end;
+
   MultiView1.HideMaster;
+end;
+
+procedure TMainForm.onAsyncCompleteEvent(ACryptoPlotData: ICryptoPlotData2);
+var
+  data: String;
+begin
+  AsyncActive(False);
+  data := ACryptoPlotData.Getdata;
+  PlotFrame1.PlotData(data);
 end;
 
 procedure TMainForm.onAsyncCompleteEvent(ACryptoListUpdated
   : ICryptoListUpdated);
 begin
-  if ACryptoListUpdated.hasImages then
-  begin
+  { if ACryptoListUpdated.hasImages then
+    begin
     CryptoImages := ACryptoListUpdated.GetImages;
-  end;
-  AsyncActive(False);
+    end; }
   updateListview(ACryptoListUpdated, firstShow);
+  if firstShow then
+  begin
+    LockScreen(False);
+    firstShow := False;
+    SpeedButton24h.SetFocus;
+    SpeedButton24h.IsPressed := true;
+    SpeedButton24h.Onclick(nil);
+  end
+  else
+    AsyncActive(False);
+
 end;
 
-procedure TMainForm.PollForData_TimerTimer(Sender: TObject);
+procedure TMainForm.PollForCryptoDataTimer(Sender: TObject);
 begin
-  if (fTaskActive) <> 0 then
+  if (nActiveTasks) <> 0 then
     // if async operation active then back off
     exit;
   try
-    AtomicIncrement(fTaskActive);
-    ActiveTaskLabel.text := 'Async count: ' + fTaskActive.ToString();
-    StatusLabel.text := 'Updating details.. ';
+    AsyncActive(true);
     TUIRequestClass.Async_GetCryptoListFields(@localCryptoList, False);
   except
-    AtomicDecrement(fTaskActive);
+    AsyncActive(False);
+  end;
+end;
+
+procedure TMainForm.GetPlotDataClick(Sender: TObject);
+var
+  ndx: integer;
+begin
+  try
+    AsyncActive(true);
+    ndx := localCryptoList.fCryptoList[SelectedListViewItem].ndx;
+    if Sender = nil then
+      TUIRequestClass.GetPlotData24h_Async(ndx)
+    else
+      case (Sender as TComponent).Tag of
+        1: // day
+          TUIRequestClass.GetPlotData24h_Async(ndx);
+        7: // days
+          TUIRequestClass.GetPlotData7d_Async(ndx);
+        14: // days
+          TUIRequestClass.GetPlotData14d_Async(ndx);
+        30: // days
+          TUIRequestClass.GetPlotData30d_Async(ndx);
+        90: // days
+          TUIRequestClass.GetPlotData90d_Async(ndx);
+        180: // days
+          TUIRequestClass.GetPlotData180d_Async(ndx);
+        365: // 1 year
+          TUIRequestClass.GetPlotData365d_Async(ndx);
+        9999: // Max
+          TUIRequestClass.GetPlotDataMax_Async(ndx);
+      end;
+  except
+    AsyncActive(False);
   end;
 end;
 
@@ -257,16 +319,20 @@ begin
       if CryptoImages.fCryptoImages.TryGetValue(CryptoObj.ID, bmp) then
       begin
         LItem.data['Image2'] := bmp;
-        log.d(Format('bmp %s', [CryptoObj.ID]));
-      end; //
+{$IFDEF DEBUG}
+        // log.d(Format('bmp %s', [CryptoObj.ID]))
+{$ENDIF}
+      end;
     end;
   finally
     ListView1.EndUpdate;
-    if firstShow then
-    begin
+    {
+      if firstShow then
+      begin
       SelectedListViewItem := 0;
       firstShow := False;
-    end;
+      end;
+    }
     ListView1ItemClick(nil, ListView1.Items[SelectedListViewItem]);
   end;
 end;
