@@ -73,12 +73,13 @@ type
     procedure GetPlotDataClick(Sender: TObject);
   private
     { Private declarations }
-    procedure updateListview(CryptoList: ICryptoListUpdated;
-      var firstShow: Boolean);
+    procedure updateListview(CryptoList: ICryptoList; var firstShow: Boolean);
     procedure LockScreen(const Active: Boolean = true);
     procedure AsyncActive(const Active: Boolean = true);
   public
     { Public declarations }
+    [Subscribe(TThreadMode.Main)]
+    procedure onAsyncCompleteEvent(ACryptoList: ICryptoList); overload;
     [Subscribe(TThreadMode.Main)]
     procedure onAsyncCompleteEvent(ACryptoListUpdated
       : ICryptoListUpdated); overload;
@@ -122,7 +123,7 @@ begin
   if Active = true then
   begin
     Stopwatch := TStopwatch.StartNew;
-    StatusLabel.text := 'Please Wait...  ';
+    StatusLabel.text := 'Loading ...  ';
     AtomicIncrement(nActiveTasks);
   end
   else
@@ -153,7 +154,7 @@ begin
     GlobalEventBus.RegisterSubscriberForEvents(Self);
     LockScreen(true);
     PollForCryptoData.Enabled := true;
-    TUIRequestClass.Async_GetCryptoListFields(@localCryptoList, true);
+    TUIRequestClass.Async_GetInitialCryptoListFields(@localCryptoList, true);
   end;
 end;
 
@@ -189,9 +190,7 @@ begin
     [SelectedCrypto.price_change_percentage_24h]);
   dayVolumeLbl.text := Format('%.0n', [SelectedCrypto.total_volume + 0.0]);
   // Set initial plotdata
-
-  // called by PollForCryptoData as well as SpeedButtonS
-  if (Sender is TSpeedButton) then
+  if (Sender is TListView) then  //User selected different currency to display
   begin
     SpeedButton24h.SetFocus;
     SpeedButton24h.IsPressed := true;
@@ -210,14 +209,13 @@ begin
   PlotFrame1.PlotData(data);
 end;
 
-procedure TMainForm.onAsyncCompleteEvent(ACryptoListUpdated
-  : ICryptoListUpdated);
+procedure TMainForm.onAsyncCompleteEvent(ACryptoList: ICryptoList);
 begin
-  { if ACryptoListUpdated.hasImages then
-    begin
-    CryptoImages := ACryptoListUpdated.GetImages;
-    end; }
-  updateListview(ACryptoListUpdated, firstShow);
+  if ACryptoList.hasImages then
+  begin
+    CryptoImages := ACryptoList.GetImages;
+  end;
+  updateListview(ACryptoList, firstShow);
   if firstShow then
   begin
     LockScreen(False);
@@ -226,15 +224,18 @@ begin
     SpeedButton24h.IsPressed := true;
     SpeedButton24h.Onclick(nil);
   end
-  else
-    AsyncActive(False);
+end;
 
+procedure TMainForm.onAsyncCompleteEvent(ACryptoListUpdated
+  : ICryptoListUpdated);
+begin
+  updateListview(ACryptoListUpdated, firstShow);
+  AsyncActive(False);
 end;
 
 procedure TMainForm.PollForCryptoDataTimer(Sender: TObject);
 begin
   if (nActiveTasks) <> 0 then
-    // if async operation active then back off
     exit;
   try
     AsyncActive(true);
@@ -277,7 +278,7 @@ begin
   end;
 end;
 
-procedure TMainForm.updateListview(CryptoList: ICryptoListUpdated;
+procedure TMainForm.updateListview(CryptoList: ICryptoList;
   var firstShow: Boolean);
 var
   bmp: TBitmap;

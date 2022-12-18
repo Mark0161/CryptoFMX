@@ -10,12 +10,16 @@ type
     ['{C5D96305-4663-442D-9BF2-C0DD67177000}']
   end;
 
-  ICryptoListUpdated = interface
-    ['{5F05B399-065F-4A20-B2CE-51847150E488}']
+  ICryptoList = interface
+    ['{7E0162C6-0434-4AB8-B88F-84E1D469503B}']
     function hasImages: Boolean;
     function Getdata(): TRCryptoList;
     function GetImages(): TRCryptoImages;
     function GetRefCount(): integer;
+  end;
+
+  ICryptoListUpdated = interface(ICryptoList)
+    ['{5F05B399-065F-4A20-B2CE-51847150E488}']
   end;
 
   ICryptoPlotData = interface
@@ -38,6 +42,8 @@ type
   // On Async operation completion, signals the calling thread with EventBus Event/Dataload
   TUIRequestClass = class
   public
+    class procedure Async_GetInitialCryptoListFields(localCryptoList
+      : pCryptoList; const GetImages: Boolean = false); static;
     class procedure Async_GetCryptoListFields(localCryptoList: pCryptoList;
       const GetImages: Boolean = false); static;
     class function GetPlotData24h_Async(const widgetid: integer)
@@ -63,6 +69,7 @@ type
   // Create Dataloads that will be passed with EventBus to calling thread
 function GetUIEvent(): IUIUpdate;
 function GetICryptoListUpdatedEvent(data: TRCryptoList): ICryptoListUpdated;
+function GetICryptoListEvent(data: TRCryptoList): ICryptoList;
 
 implementation
 
@@ -85,6 +92,8 @@ type
     Destructor Destroy; override;
   end;
 
+  TICryptoList = class(TICryptoListUpdated, ICryptoList);
+
   TCryptoPlotData2 = class(TInterfacedObject, ICryptoPlotData2)
   private
     fJSONStr: String;
@@ -103,6 +112,12 @@ begin
   result := TUIUpdate.Create;
 end;
 
+function GetICryptoListEvent(data: TRCryptoList): ICryptoList;
+begin
+ // result := (TICryptoListUpdated.Create(data) as ICryptoList);
+  result := TICryptoList.Create(data);
+end;
+
 function GetICryptoListUpdatedEvent(data: TRCryptoList): ICryptoListUpdated;
 begin
   result := TICryptoListUpdated.Create(data);
@@ -115,6 +130,21 @@ begin
 end;
 
 { TUIRequestClass }
+
+class procedure TUIRequestClass.Async_GetInitialCryptoListFields(localCryptoList
+  : pCryptoList; const GetImages: Boolean);
+begin
+  TTask.Run(
+    procedure
+    begin
+      Dm.CreateAsyncFn_GetfulllistofCryptoCurrencies(localCryptoList,
+        GetImages).Wait();
+      var
+        CryptoList: ICryptoList :=
+          GetICryptoListEvent(localCryptoList^);
+      GlobalEventBus.post(CryptoList);
+    end);
+end;
 
 class procedure TUIRequestClass.Async_GetCryptoListFields(localCryptoList
   : pCryptoList; const GetImages: Boolean = false);
