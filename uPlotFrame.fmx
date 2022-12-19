@@ -1,21 +1,101 @@
 object PlotFrame: TPlotFrame
   Size.Width = 839.000000000000000000
-  Size.Height = 388.000000000000000000
+  Size.Height = 547.000000000000000000
   Size.PlatformDefault = False
-  object Memo1: TMemo
-    Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
-    DataDetectorTypes = []
-    ReadOnly = True
+  object TabControl: TTabControl
     Align = Client
-    Margins.Left = 10.000000000000000000
-    Margins.Top = 10.000000000000000000
-    Margins.Right = 10.000000000000000000
-    Margins.Bottom = 10.000000000000000000
-    Size.Width = 819.000000000000000000
-    Size.Height = 368.000000000000000000
+    Size.Width = 839.000000000000000000
+    Size.Height = 547.000000000000000000
     Size.PlatformDefault = False
+    TabIndex = 1
     TabOrder = 0
-    Viewport.Width = 819.000000000000000000
-    Viewport.Height = 368.000000000000000000
+    TabPosition = PlatformDefault
+    Sizes = (
+      839s
+      521s
+      839s
+      521s)
+    object PriceTab: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = False
+      Size.Width = 46.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Price'
+      object PriceChart: TChart
+        Foot.Font.StyleExt = {00040000000200000004000000}
+        Legend.Title.Font.StyleExt = {00070000000000000004000000}
+        Legend.Visible = False
+        SubFoot.Font.StyleExt = {00040000000200000004000000}
+        Title.Text.Strings = (
+          'Price')
+        View3D = False
+        Zoom.Brush.Kind = None
+        Zoom.Pen.Fill.Color = claSilver
+        Align = Client
+        BevelOuter = bvNone
+        TabOrder = 0
+        Size.Width = 839.000000000000000000
+        Size.Height = 521.000000000000000000
+        Size.PlatformDefault = False
+        ColorPaletteIndex = 13
+        object LineSeries1: TLineSeries
+          Brush.BackColor = x00FFFFFF
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          XValues.DateTime = True
+          XValues.Name = 'X'
+          XValues.Order = loNone
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+      end
+    end
+    object VolTab: TTabItem
+      CustomIcon = <
+        item
+        end>
+      IsSelected = True
+      Size.Width = 61.000000000000000000
+      Size.Height = 26.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = ''
+      TabOrder = 0
+      Text = 'Volume'
+      object VolChart: TChart
+        Foot.Font.StyleExt = {00040000000200000004000000}
+        Legend.Title.Font.StyleExt = {00070000000000000004000000}
+        SubFoot.Font.StyleExt = {00040000000200000004000000}
+        Title.Text.Strings = (
+          'Price')
+        View3D = False
+        Zoom.Brush.Kind = None
+        Zoom.Pen.Fill.Color = claSilver
+        Align = Client
+        BevelOuter = bvNone
+        TabOrder = 0
+        Size.Width = 839.000000000000000000
+        Size.Height = 521.000000000000000000
+        Size.PlatformDefault = False
+        ColorPaletteIndex = 13
+        object LineSeries2: TLineSeries
+          Legend.Visible = False
+          SeriesColor = xFFE24612
+          ShowInLegend = False
+          Brush.BackColor = x00FFFFFF
+          Pointer.InflateMargins = True
+          Pointer.Style = psRectangle
+          XValues.DateTime = True
+          XValues.Name = 'X'
+          XValues.Order = loNone
+          YValues.Name = 'Y'
+          YValues.Order = loNone
+        end
+      end
+    end
   end
 end

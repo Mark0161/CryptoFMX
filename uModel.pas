@@ -36,9 +36,6 @@ type
     function Getdata(): String;
     function GetdateRange(): String;
   end;
-
-  // EventBus Dataload Interfaces BEGIN
-
   // On Async operation completion, signals the calling thread with EventBus Event/Dataload
   TUIRequestClass = class
   public
