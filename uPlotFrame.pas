@@ -72,7 +72,6 @@ begin
           begin
             jVItem := jVArray.Items[I] as TJSONArray;
             jVItem.Items[0].TryGetValue(DUnixdate2);
-            // Assert(Dunixdate1 = DUnixdate2);
             jVItem.Items[1].TryGetValue(Volume);
           end;
         end;
@@ -88,23 +87,17 @@ end;
 
 procedure TPlotFrame.PlotData(const JSonStr: String);
 var
-  JsonValue: TJSONObject;
   PlotData: TPlotData2;
-  I: Integer;
   Item: TPair<unixdate, TPlotRec>;
   // http://www.teechart.net/docs/teechart/vclfmx/tutorials/UserGuide/html/manu423y.htm#creating_series_at_runtime
 begin
   PlotData := Json2Plotdata(JSonStr);
-  I := 0;
   PriceChart.Series[0].Clear;
   VolChart.Series[0].Clear;
   for Item in PlotData do
   begin
-    // PriceChart.Series[0].Add(Item.value.fPrice);
-    // PriceChart.Series[0].Add(Item.value.fPrice,UnixToDateTime(Item.Key));
     PriceChart.Series[0].AddXY(UnixToDateTime(Item.Key), Item.value.fPrice);
     VolChart.Series[0].AddXY(UnixToDateTime(Item.Key), Item.value.fVolume);
-   // VolChart.Series[0].Add(Item.value.fVolume);
   end;
   PlotData.free;
 

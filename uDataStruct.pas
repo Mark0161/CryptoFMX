@@ -88,7 +88,8 @@ type
     fCryptoList: TObjectList<TCryptoStruct>;
     class operator Initialize(out Dest: TRCryptoList);
     class operator Finalize(var Dest: TRCryptoList);
-    class operator Assign(var Dest: TRCryptoList; const [ref] Src: TRCryptoList);
+    class operator Assign(var Dest: TRCryptoList;
+      const [ref] Src: TRCryptoList);
     // [ref] used here to prevent compiler doing a value copy
   end;
 
@@ -116,13 +117,6 @@ type
   TPlotdata2 = TList<TPair<unixdate, TPlotRec>>;
 
 type
-  TRoundedValues = record
-    UpperValue: integer;
-    LowerValue: integer;
-    factor: double;
-  end;
-
-type
   TMRStringList = record
     List: TStringlist;
     class operator Initialize(out Dest: TMRStringList);
@@ -132,7 +126,7 @@ type
 
 implementation
 
-uses System.SysUtils, math;
+uses System.SysUtils;
 
 { TCryptoList }
 

@@ -15,7 +15,6 @@ type
     function hasImages: Boolean;
     function Getdata(): TRCryptoList;
     function GetImages(): TRCryptoImages;
-    function GetRefCount(): integer;
   end;
 
   ICryptoListUpdated = interface(ICryptoList)
@@ -27,7 +26,6 @@ type
     function GetId(): String;
     function Getdata(): String;
     function GetdateRange(): String;
-    function GetRefCount(): integer;
   end;
 
   ICryptoPlotData2 = interface

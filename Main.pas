@@ -57,6 +57,7 @@ type
     Layout1: TLayout;
     PleaseWaitRectangle: TRectangle;
     AniIndicator1: TAniIndicator;
+    //StatusBar with Animation to give visual feedback on UI Blocking
     StatusBar1: TStatusBar;
     StatusLabel: TLabel;
     ScrollBar1: TScrollBar;
@@ -104,6 +105,9 @@ var
   SelectedCrypto: TCryptoStruct;
   SelectedListViewItem: integer = 0;
   Stopwatch: TStopwatch;
+  // keeps a count of async tasks running
+  // Prevents Application from Quiting if any tasks active
+  // stops a TTask outliving the application_
   nActiveTasks: integer = 0;
 
 procedure TMainForm.LockScreen(const Active: Boolean);
@@ -123,12 +127,14 @@ begin
   if Active = true then
   begin
     Stopwatch := TStopwatch.StartNew;
+    StatusLabel.TextSettings.FontColor := TAlphaColorRec.Red;
     StatusLabel.text := 'Loading ...  ';
     AtomicIncrement(nActiveTasks);
   end
   else
   begin
     Stopwatch.Stop;
+    StatusLabel.TextSettings.FontColor := TAlphaColorRec.Black;
     StatusLabel.text := 'Ready';
     ElapsedTimeLabel.text := Format('Async time %d ms',
       [Stopwatch.ElapsedMilliseconds]);
@@ -151,6 +157,7 @@ procedure TMainForm.FormShow(Sender: TObject);
 begin
   if firstShow then
   begin
+    PlotFrame1.TabControl.ActiveTab :=  PlotFrame1.TabControl.Tabs[0];
     GlobalEventBus.RegisterSubscriberForEvents(Self);
     LockScreen(true);
     PollForCryptoData.Enabled := true;
