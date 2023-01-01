@@ -1,5 +1,5 @@
 # CryptoFMX
-### Sample Delphi Programming - showing REST/PPL/FMX using www.coingecko.com api.
+### Sample Delphi (Windows) Program - showing REST/PPL/FMX using www.coingecko.com api.
 <BR/>
 <BR/>
 
@@ -32,6 +32,6 @@
 * Animated scroll bar used to indocate load on main UI.
 
 ### Status 
-    Just needs a final tidy up.
+    Just needs a final tidy up. Developed and Tested on Windows 10. 
 
 
