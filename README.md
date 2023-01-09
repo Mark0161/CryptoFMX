@@ -29,7 +29,7 @@
 * TMonitor used as a precaution to protect data. Although adopted cloning data as opposed to Sharing/Locking.
 * Functions that return futures.
 * Keeps a count of async tasks running. Prevents Application from closing while threads are active. _ie stop a TTask outliving the application_. 
-* Animated scroll bar used to indocate load on main UI.
+* Animated scroll bar used to indicate load on main UI.
 
 ### Status 
     Just needs a final tidy up. Developed and Tested on Windows 10. 
