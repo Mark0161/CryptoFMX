@@ -341,8 +341,10 @@ begin
   if not PlotGraph then
     exit;
 
+
   var
   Save := Canvas.SaveState;
+  Canvas.BeginScene;
   try
     M1 := Canvas.Matrix.CreateScaling(1, -1);
     M2 := Canvas.Matrix.CreateTranslation(0, ARect.Height);
@@ -385,6 +387,7 @@ begin
     Canvas.DrawPath(fPathData, 0.75);
     Canvas.FillPath(fPathData, 0.5);
   finally
+    Canvas.EndScene;
     Canvas.RestoreState(Save);
   end;
 end;
@@ -464,8 +467,10 @@ begin
   // Y-Axis
   var
   Save := Canvas.SaveState;
+  Canvas.BeginScene;
   try
     Canvas.Stroke.Color := TAlphaColorRec.Blue;
+    Canvas.Fill.Color := TAlphaColorRec.Black;
     for I in [0, 5, 10] do
     begin
       s := PricePlotPt.Y + (XDiv * I);
@@ -488,7 +493,6 @@ begin
         Canvas.FillText(RectT, FormatFloat('0.00', PriceLowerValue), False, 100,
           [], TTextAlign.Center);
     end;
-
     XDiv := VolPath.BoundsRect.Height / 10;
     VolPlotPt := TPointF.Create(VolLayout.BoundsRect.TopLeft.X,
       VolLayout.BoundsRect.TopLeft.Y + VolLabel.Height);
@@ -541,6 +545,7 @@ begin
       Canvas.Stroke.Thickness := 1;
     end;
   finally
+    Canvas.EndScene;
     Canvas.RestoreState(Save);
   end;
 end;
@@ -598,9 +603,8 @@ begin
 
   var
   Save := Canvas.SaveState;
+  Canvas.BeginScene;
   try
-
-    Canvas.Fill.Color := TAlphaColorRec.Black;
     M1 := Canvas.Matrix.CreateScaling(1, -1);
     M2 := Canvas.Matrix.CreateTranslation(0, ARect.Height);
     M3 := Canvas.Matrix;
@@ -643,6 +647,7 @@ begin
     Canvas.FillPath(fPathData, 0.10);
   finally
     Canvas.RestoreState(Save);
+    Canvas.EndScene;
   end;
 end;
 
