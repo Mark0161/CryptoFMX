@@ -1,0 +1,141 @@
+object XPlotFrame: TXPlotFrame
+  Padding.Left = 100.000000000000000000
+  Padding.Top = 10.000000000000000000
+  Padding.Right = 10.000000000000000000
+  Padding.Bottom = 40.000000000000000000
+  Size.Width = 952.000000000000000000
+  Size.Height = 440.000000000000000000
+  Size.PlatformDefault = False
+  OnResized = FrameResized
+  object BkgRectangle: TRectangle
+    Align = Contents
+    Fill.Color = claBeige
+    Padding.Left = 100.000000000000000000
+    Padding.Top = 5.000000000000000000
+    Padding.Right = 10.000000000000000000
+    Padding.Bottom = 40.000000000000000000
+    Size.Width = 952.000000000000000000
+    Size.Height = 440.000000000000000000
+    Size.PlatformDefault = False
+    OnPaint = BkgRectanglePaint
+    object PriceLayout: TLayout
+      Align = Client
+      Size.Width = 842.000000000000000000
+      Size.Height = 281.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 0
+      object PriceLabel: TLabel
+        Align = MostTop
+        StyledSettings = []
+        Opacity = 0.500000000000000000
+        Margins.Left = 12.000000000000000000
+        Position.X = 12.000000000000000000
+        Size.Width = 830.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Text = #163' Price'
+        TabOrder = 1
+      end
+      object PricePath: TPath
+        Align = Client
+        Size.Width = 842.000000000000000000
+        Size.Height = 256.000000000000000000
+        Size.PlatformDefault = False
+        OnMouseMove = PricePathMouseMove
+        OnMouseEnter = PricePathMouseEnter
+        OnMouseLeave = PricePathMouseLeave
+        OnPaint = PricePathPaint
+        OnResized = PricePathResized
+        object Line1: TLine
+          LineType = Left
+          Opacity = 0.250000000000000000
+          Position.X = 10.000000000000000000
+          Position.Y = 30.000000000000000000
+          Size.Width = 1.000000000000000000
+          Size.Height = 50.000000000000000000
+          Size.PlatformDefault = False
+          Stroke.Color = claBlue
+        end
+        object Ellipse1: TEllipse
+          Fill.Color = claBlack
+          Position.X = 10.000000000000000000
+          Position.Y = 248.000000000000000000
+          Size.Width = 10.000000000000000000
+          Size.Height = 10.000000000000000000
+          Size.PlatformDefault = False
+        end
+      end
+      object DetailMemo: TMemo
+        Touch.InteractiveGestures = [Pan, LongTap, DoubleTap]
+        DataDetectorTypes = []
+        ShowScrollBars = False
+        StyledSettings = []
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Opacity = 0.750000000000000000
+        Position.X = 16.000000000000000000
+        Position.Y = 128.000000000000000000
+        Size.Width = 145.000000000000000000
+        Size.Height = 81.000000000000000000
+        Size.PlatformDefault = False
+        TabOrder = 0
+        Viewport.Width = 145.000000000000000000
+        Viewport.Height = 81.000000000000000000
+      end
+    end
+    object VolLayout: TLayout
+      Align = MostBottom
+      Position.X = 100.000000000000000000
+      Position.Y = 289.000000000000000000
+      Size.Width = 842.000000000000000000
+      Size.Height = 111.000000000000000000
+      Size.PlatformDefault = False
+      TabOrder = 1
+      object VolLabel: TLabel
+        Align = Top
+        StyledSettings = []
+        Opacity = 0.500000000000000000
+        Margins.Left = 12.000000000000000000
+        Position.X = 12.000000000000000000
+        Size.Width = 830.000000000000000000
+        Size.Height = 25.000000000000000000
+        Size.PlatformDefault = False
+        TextSettings.Font.StyleExt = {00070000000000000004000000}
+        Text = #163' Volume'
+        TabOrder = 0
+        OnMouseMove = VolLabelMouseMove
+        OnMouseEnter = VolLabelMouseEnter
+        OnMouseLeave = VolLabelMouseLeave
+      end
+      object VolPath: TPath
+        Align = Client
+        Size.Width = 842.000000000000000000
+        Size.Height = 86.000000000000000000
+        Size.PlatformDefault = False
+        OnMouseMove = VolPathMouseMove
+        OnMouseEnter = VolPathMouseEnter
+        OnMouseLeave = VolPathMouseLeave
+        OnPaint = VolPathPaint
+        object Ellipse2: TEllipse
+          Fill.Color = claBlack
+          Position.X = 10.000000000000000000
+          Position.Y = 75.000000000000000000
+          Size.Width = 10.000000000000000000
+          Size.Height = 10.000000000000000000
+          Size.PlatformDefault = False
+        end
+      end
+    end
+    object Splitter1: TSplitter
+      Align = Bottom
+      Cursor = crVSplit
+      MinSize = 20.000000000000000000
+      Position.X = 100.000000000000000000
+      Position.Y = 286.000000000000000000
+      Size.Width = 842.000000000000000000
+      Size.Height = 3.000000000000000000
+      Size.PlatformDefault = False
+      StyleLookup = 'splitterstyle'
+    end
+  end
+end

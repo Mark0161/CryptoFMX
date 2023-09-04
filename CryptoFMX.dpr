@@ -3,12 +3,11 @@ program CryptoFMX;
 uses
   System.StartUpCopy,
   FMX.Forms,
-  Main in 'Main.pas' {Form1},
+  uMain in 'uMain.pas' {MainForm},
+  uCryptoData in 'uCryptoData.pas',
   uDM in 'uDM.pas' {DM: TDataModule},
-  uDataStruct in 'uDataStruct.pas',
-  uDataStructHelpers in 'uDataStructHelpers.pas',
-  uModel in 'uModel.pas',
-  uPlotFrame in 'uPlotFrame.pas' {PlotFrame: TFrame};
+  uViewModel in 'uViewModel.pas',
+  uXPlotFrame in 'uXPlotFrame.pas' {XPlotFrame: TFrame};
 
 {$R *.res}
 

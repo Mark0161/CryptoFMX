@@ -1,0 +1,6 @@
+# 2 Sept 2023
+- Main objective was to removed ThirdParty dependencies / excess code. 
+	(i.e TeeChart removed using TPath component to draw Graphs see uxPlotFrame unit )
+	(i.e EventBus bus removed uses PPL exclusively)
+- All the async/ui co-ordination takes place within uViewModel.pas
+
